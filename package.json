@@ -9,12 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "heti": "^0.9.6",
+    "html-to-image": "^1.11.13",
+    "jszip": "^3.10.1",
+    "marked": "^17.0.5",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jszip": "^3.4.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
