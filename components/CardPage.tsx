@@ -81,7 +81,7 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
             {/* 用户名 */}
             <span
               style={{
-                fontSize: 28,
+                fontSize: 30,
                 color: template.secondaryColor,
                 fontWeight: 500,
               }}
@@ -116,7 +116,7 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
           {totalPages > 1 && (
             <span
               style={{
-                fontSize: 24,
+                fontSize: 27,
                 color: template.secondaryColor,
                 fontWeight: 400,
                 letterSpacing: "0.05em",
@@ -130,7 +130,7 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
           {isLastPage && (
             <span
               style={{
-                fontSize: 24,
+                fontSize: 27,
                 color: template.secondaryColor,
                 fontWeight: 400,
                 marginLeft: "auto",
