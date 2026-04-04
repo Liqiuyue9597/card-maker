@@ -9,6 +9,7 @@ interface PreviewProps {
   template: TemplateConfig;
   username: string;
   avatarUrl: string | null;
+  showAuthor: boolean;
   currentPage: number;
   onPageChange: (page: number) => void;
 }
@@ -18,6 +19,7 @@ export default function Preview({
   template,
   username,
   avatarUrl,
+  showAuthor,
   currentPage,
   onPageChange,
 }: PreviewProps) {
@@ -50,6 +52,7 @@ export default function Preview({
             totalPages={totalPages}
             username={username}
             avatarUrl={avatarUrl}
+            showAuthor={showAuthor}
             isFirstPage={currentPage === 0}
             isLastPage={currentPage === totalPages - 1}
           />

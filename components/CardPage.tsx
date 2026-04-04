@@ -11,6 +11,7 @@ interface CardPageProps {
   totalPages: number;
   username: string;
   avatarUrl: string | null;
+  showAuthor: boolean;
   isFirstPage: boolean;
   isLastPage: boolean;
   "data-card-page"?: boolean;
@@ -29,6 +30,7 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
       totalPages,
       username,
       avatarUrl,
+      showAuthor,
       isFirstPage,
       isLastPage,
       ...rest
@@ -52,8 +54,8 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
           overflow: "hidden",
         }}
       >
-        {/* 页眉：仅首页显示 */}
-        {isFirstPage && (
+        {/* 页眉：仅首页且显示署名时显示 */}
+        {isFirstPage && showAuthor && (
           <div
             style={{
               display: "flex",
@@ -126,8 +128,8 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
             </span>
           )}
 
-          {/* 末页水印 */}
-          {isLastPage && (
+          {/* 水印 */}
+          {(
             <span
               style={{
                 fontSize: 27,

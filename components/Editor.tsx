@@ -10,6 +10,8 @@ interface EditorProps {
   onUsernameChange: (value: string) => void;
   avatarUrl: string | null;
   onAvatarChange: (url: string | null) => void;
+  showAuthor: boolean;
+  onShowAuthorChange: (show: boolean) => void;
   templateId: string;
   onTemplateChange: (id: string) => void;
   onExport: () => void;
@@ -45,6 +47,8 @@ export default function Editor({
   onUsernameChange,
   avatarUrl,
   onAvatarChange,
+  showAuthor,
+  onShowAuthorChange,
   templateId,
   onTemplateChange,
   onExport,
@@ -75,6 +79,17 @@ export default function Editor({
       <div className="flex flex-col gap-4">
         {/* 头像 + 用户名 */}
         <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showAuthor}
+              onChange={(e) => onShowAuthorChange(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-500 accent-gray-900"
+            />
+            <span className="text-xs text-gray-500">显示署名</span>
+          </label>
+        </div>
+        <div className={`flex items-center gap-3 transition-opacity ${showAuthor ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
           <label className="relative cursor-pointer group">
             <div
               className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300 group-hover:border-gray-400 transition"

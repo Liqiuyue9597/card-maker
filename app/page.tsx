@@ -13,6 +13,7 @@ export default function Home() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN);
   const [username, setUsername] = useState("LuckyYou");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [showAuthor, setShowAuthor] = useState(true);
   const [templateId, setTemplateId] = useState("minimal-white");
   const [currentPage, setCurrentPage] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
@@ -74,6 +75,8 @@ export default function Home() {
           onUsernameChange={setUsername}
           avatarUrl={avatarUrl}
           onAvatarChange={setAvatarUrl}
+          showAuthor={showAuthor}
+          onShowAuthorChange={setShowAuthor}
           templateId={templateId}
           onTemplateChange={setTemplateId}
           onExport={handleExport}
@@ -90,6 +93,7 @@ export default function Home() {
           template={template}
           username={username}
           avatarUrl={avatarUrl}
+          showAuthor={showAuthor}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />
@@ -116,6 +120,7 @@ export default function Home() {
               totalPages={pages.length}
               username={username}
               avatarUrl={avatarUrl}
+              showAuthor={showAuthor}
               isFirstPage={i === 0}
               isLastPage={i === pages.length - 1}
             />
