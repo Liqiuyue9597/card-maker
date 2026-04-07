@@ -9,6 +9,8 @@ export interface TemplateConfig {
   textColor: string;
   // 次要文字颜色（用户名、页码、水印）
   secondaryColor: string;
+  // 强调色（用于图标、修饰元素等）
+  accentColor: string;
   // 分割线颜色
   dividerColor: string;
   // 额外 CSS 类名
@@ -24,6 +26,7 @@ export const templates: TemplateConfig[] = [
     background: "#ffffff",
     textColor: "#1a1a1a",
     secondaryColor: "#999999",
+    accentColor: "#333333",
     dividerColor: "#e5e5e5",
     className: "",
     preview: "#ffffff",
@@ -31,12 +34,13 @@ export const templates: TemplateConfig[] = [
   {
     id: "gradient-warm",
     name: "复古暖阳",
-    background: "linear-gradient(160deg, #f5eddf 0%, #efe3cd 35%, #e8d5b8 65%, #f0e6d4 100%)",
-    textColor: "#3a2a1a",
-    secondaryColor: "#8c7260",
-    dividerColor: "rgba(140,114,96,0.25)",
+    background: "linear-gradient(160deg, #fdfaf5 0%, #f9f3e8 35%, #f4eee0 65%, #fbf8f1 100%)",
+    textColor: "#4a3a2a",
+    secondaryColor: "#a68d7a",
+    accentColor: "#e67e22",
+    dividerColor: "rgba(166,141,122,0.15)",
     className: "card-gradient",
-    preview: "linear-gradient(160deg, #f5eddf 0%, #e8d5b8 65%, #f0e6d4 100%)",
+    preview: "linear-gradient(160deg, #fdfaf5 0%, #f4eee0 65%, #fbf8f1 100%)",
   },
   {
     id: "dark-literary",
@@ -44,10 +48,11 @@ export const templates: TemplateConfig[] = [
     background: "linear-gradient(170deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 100%)",
     textColor: "#d4d4e0",
     secondaryColor: "rgba(180,180,210,0.5)",
+    accentColor: "#6c5ce7",
     dividerColor: "rgba(180,180,210,0.15)",
     className: "card-dark",
     preview: "linear-gradient(170deg, #0f0f1a 0%, #16213e 100%)",
-  },
+  }
 ];
 
 export function getTemplate(id: string): TemplateConfig {

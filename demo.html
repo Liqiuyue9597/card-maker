@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Card UI Demos</title>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      padding: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+    
+    .demo-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .demo-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* 卡片基础缩放（这里缩小到原本 1080x1440 的 38% 方便在浏览器中预览） */
+    .card-preview-container {
+      width: 410.4px; /* 1080 * 0.38 */
+      height: 547.2px; /* 1440 * 0.38 */
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      overflow: hidden;
+      background: white;
+    }
+
+    .card {
+      width: 1080px;
+      height: 1440px;
+      padding: 80px;
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.38);
+      transform-origin: top left;
+    }
+
+    .card-border {
+      position: absolute;
+      top: 24px; left: 24px; right: 24px; bottom: 24px;
+      border-radius: 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #ccc;
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .username {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .date {
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .content {
+      flex: 1;
+      font-size: 36px;
+      line-height: 2;
+      letter-spacing: 0.03em;
+    }
+    
+    .content h1 { font-size: 54px; font-weight: 700; margin-bottom: 32px; line-height: 1.4; }
+    .content p { margin-bottom: 10px; }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top-width: 1.5px;
+      border-top-style: solid;
+      flex-shrink: 0;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-indicator {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    /* === 模板：简约白 === */
+    .theme-minimal { background: #ffffff; color: #1a1a1a; }
+    .theme-minimal .card-border { border: 1px solid #e5e5e5; }
+    .theme-minimal .avatar { border: 3px solid #ffffff; box-shadow: 0 0 0 2px #333333; }
+    .theme-minimal .date, .theme-minimal .logo-text { color: #999999; }
+    .theme-minimal .footer { border-top-color: #e5e5e5; }
+    .theme-minimal .logo-icon { background-color: #333333; }
+    .theme-minimal .page-indicator { background-color: #e5e5e5; color: #1a1a1a; }
+
+    /* === 模板：深夜诗篇 === */
+    .theme-dark { background: linear-gradient(170deg, #0f0f1a 0%, #1a1a2e 40%, #16213e 100%); color: #d4d4e0; }
+    .theme-dark .card-border { border: 1px solid rgba(180,180,210,0.15); }
+    .theme-dark .avatar { border: 3px solid #1a1a2e; box-shadow: 0 0 0 2px #6c5ce7; }
+    .theme-dark .date, .theme-dark .logo-text { color: rgba(180,180,210,0.5); }
+    .theme-dark .footer { border-top-color: rgba(180,180,210,0.15); }
+    .theme-dark .logo-icon { background-color: #6c5ce7; }
+    .theme-dark .page-indicator { background-color: rgba(180,180,210,0.15); color: #d4d4e0; }
+    
+    /* === 模板：静谧翠绿 === */
+    .theme-green { background: linear-gradient(145deg, #e3efe8 0%, #cce3d8 50%, #b3d4c6 100%); color: #2c3e35; }
+    .theme-green .card-border { border: 1px solid rgba(91,124,107,0.2); }
+    .theme-green .avatar { border: 3px solid #cce3d8; box-shadow: 0 0 0 2px #27ae60; }
+    .theme-green .date, .theme-green .logo-text { color: #5b7c6b; }
+    .theme-green .footer { border-top-color: rgba(91,124,107,0.2); }
+    .theme-green .logo-icon { background-color: #27ae60; }
+    .theme-green .page-indicator { background-color: rgba(91,124,107,0.2); color: #2c3e35; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Demo 1: 简约白 -->
+  <div class="demo-wrapper">
+    <div class="demo-title">简约白 (Minimal White)</div>
+    <div class="card-preview-container">
+      <div class="card theme-minimal">
+        <div class="card-border"></div>
+        <div class="card-inner">
+          <div class="header">
+            <div class="avatar"></div>
+            <div class="user-info">
+              <span class="username">@LuckyYou</span>
+              <span class="date">Apr 07, 2026</span>
+            </div>
+          </div>
+          <div class="content">
+            <h1>长风破浪会有时，<br>直挂云帆济沧海。</h1>
+            <p>When you feel like you are moving slowly, just remember that as long as you don't go backwards, you are already making progress.</p>
+            <p>当你觉得自己走得很慢时，只要不后退，就已经是在前进了。</p>
+          </div>
+          <div class="footer">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+              </div>
+              <span class="logo-text">CARD MAKER</span>
+            </div>
+            <div class="footer-right">
+              <div class="page-indicator">1 / 1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo 2: 深夜诗篇 -->
+  <div class="demo-wrapper">
+    <div class="demo-title">深夜诗篇 (Dark Literary)</div>
+    <div class="card-preview-container">
+      <div class="card theme-dark">
+        <div class="card-border"></div>
+        <div class="card-inner">
+          <div class="header">
+            <div class="avatar"></div>
+            <div class="user-info">
+              <span class="username">@LuckyYou</span>
+              <span class="date">Apr 07, 2026</span>
+            </div>
+          </div>
+          <div class="content">
+            <h1>长风破浪会有时，<br>直挂云帆济沧海。</h1>
+            <p>When you feel like you are moving slowly, just remember that as long as you don't go backwards, you are already making progress.</p>
+            <p>当你觉得自己走得很慢时，只要不后退，就已经是在前进了。</p>
+          </div>
+          <div class="footer">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f0f1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+              </div>
+              <span class="logo-text">CARD MAKER</span>
+            </div>
+            <div class="footer-right">
+              <div class="page-indicator">1 / 1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo 3: 静谧翠绿 -->
+  <div class="demo-wrapper">
+    <div class="demo-title">静谧翠绿 (Serene Green)</div>
+    <div class="card-preview-container">
+      <div class="card theme-green">
+        <div class="card-border"></div>
+        <div class="card-inner">
+          <div class="header">
+            <div class="avatar"></div>
+            <div class="user-info">
+              <span class="username">@LuckyYou</span>
+              <span class="date">Apr 07, 2026</span>
+            </div>
+          </div>
+          <div class="content">
+            <h1>长风破浪会有时，<br>直挂云帆济沧海。</h1>
+            <p>When you feel like you are moving slowly, just remember that as long as you don't go backwards, you are already making progress.</p>
+            <p>当你觉得自己走得很慢时，只要不后退，就已经是在前进了。</p>
+          </div>
+          <div class="footer">
+            <div class="footer-logo">
+              <div class="logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e3efe8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+              </div>
+              <span class="logo-text">CARD MAKER</span>
+            </div>
+            <div class="footer-right">
+              <div class="page-indicator">1 / 1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

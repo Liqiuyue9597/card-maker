@@ -146,24 +146,24 @@ body {
 
 /* ===== 渐变暖色模板样式覆盖 ===== */
 .card-gradient .card-content hr {
-  border-top-color: rgba(160, 136, 114, 0.2);
+  border-top-color: rgba(166, 141, 122, 0.15);
 }
 
 .card-gradient .card-content blockquote {
-  border-left-color: rgba(160, 136, 114, 0.35);
-  color: #6b5544;
+  border-left-color: rgba(166, 141, 122, 0.3);
+  color: #8c7260;
 }
 
 .card-gradient .card-content code {
-  background: rgba(160, 136, 114, 0.1);
+  background: rgba(166, 141, 122, 0.08);
 }
 
 .card-gradient .card-content pre {
-  background: rgba(160, 136, 114, 0.08);
+  background: rgba(166, 141, 122, 0.06);
 }
 
 .card-gradient .card-content strong {
-  color: #2a1f14;
+  color: #3a2a1a;
 }
 
 /* ===== 编辑器样式 ===== */
