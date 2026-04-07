@@ -89,28 +89,42 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
                 flexShrink: 0,
               }}
             >
-              {/* 头像 */}
+              {/* 头像：外圈描边 + 内圈图片，避免 boxShadow 导致移动端导出伪影 */}
               <div
                 style={{
-                  width: 80,
-                  height: 80,
+                  width: 86,
+                  height: 86,
                   borderRadius: "50%",
-                  backgroundColor: "#e0e0e0",
+                  backgroundColor: template.accentColor,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   flexShrink: 0,
-                  border: `3px solid ${template.background}`,
-                  boxShadow: `0 0 0 2px ${template.accentColor}`,
-                  overflow: "hidden",
                 }}
               >
-                {avatarUrl && (
+                {avatarUrl ? (
                   <img
                     src={avatarUrl}
                     alt=""
+                    width={80}
+                    height={80}
                     style={{
-                      width: "100%",
-                      height: "100%",
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
                       objectFit: "cover",
                       display: "block",
+                      border: `3px solid ${template.background}`,
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: "50%",
+                      backgroundColor: "#e0e0e0",
+                      border: `3px solid ${template.background}`,
                     }}
                   />
                 )}
