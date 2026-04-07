@@ -96,16 +96,25 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
                   height: 80,
                   borderRadius: "50%",
                   backgroundColor: "#e0e0e0",
-                  backgroundImage: avatarUrl
-                    ? `url(${avatarUrl})`
-                    : "none",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
                   flexShrink: 0,
                   border: `3px solid ${template.background}`,
                   boxShadow: `0 0 0 2px ${template.accentColor}`,
+                  overflow: "hidden",
                 }}
-              />
+              >
+                {avatarUrl && (
+                  <img
+                    src={avatarUrl}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                )}
+              </div>
               {/* 用户信息 */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <span

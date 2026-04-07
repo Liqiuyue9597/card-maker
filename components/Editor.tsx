@@ -1,7 +1,8 @@
 "use client";
 
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import TemplateSelector from "./TemplateSelector";
+import { isMobile } from "@/lib/export";
 
 interface EditorProps {
   markdown: string;
@@ -64,6 +65,15 @@ export default function Editor({
     };
     reader.readAsDataURL(file);
   };
+
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    setMobile(isMobile());
+  }, []);
+
+  const exportLabel = mobile
+    ? `保存图片${totalPages > 1 ? `（共 ${totalPages} 张）` : ""}`
+    : `下载图片${totalPages > 1 ? `（共 ${totalPages} 张）` : ""}`;
 
   return (
     <div className="flex flex-col h-full gap-5 p-5">
@@ -198,7 +208,7 @@ export default function Editor({
           </>
         ) : (
           <>
-            下载图片{totalPages > 1 ? `（共 ${totalPages} 张）` : ""}
+            {exportLabel}
           </>
         )}
       </button>
