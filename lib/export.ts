@@ -3,8 +3,9 @@ import JSZip from "jszip";
 import { CARD_WIDTH, CARD_HEIGHT } from "./paginate";
 
 /**
- * 等待节点内所有 <img> 加载完成（含 base64），
- * 避免移动端导出时头像空白
+ * 等待节点内所有 <img> 加载完成 + 强制同步解码
+ * Safari 在 foreignObject 内不会等 async 解码完成就导出 canvas，
+ * 设置 decoding="sync" 可以强制浏览器同步解码图片
  */
 async function waitForImages(node: HTMLElement): Promise<void> {
   const imgs = node.querySelectorAll("img");
@@ -12,6 +13,10 @@ async function waitForImages(node: HTMLElement): Promise<void> {
     Array.from(imgs).map(
       (img) =>
         new Promise<void>((resolve) => {
+          // 强制同步解码
+          img.setAttribute("decoding", "sync");
+          img.setAttribute("crossorigin", "anonymous");
+
           if (img.complete && img.naturalWidth > 0) {
             resolve();
           } else {
@@ -21,6 +26,53 @@ async function waitForImages(node: HTMLElement): Promise<void> {
         })
     )
   );
+}
+
+/**
+ * toPng 的参数配置
+ */
+function getToPngOptions(scale: number) {
+  return {
+    width: CARD_WIDTH * scale,
+    height: CARD_HEIGHT * scale,
+    style: {
+      transform: `scale(${scale})`,
+      transformOrigin: "top left",
+      width: `${CARD_WIDTH}px`,
+      height: `${CARD_HEIGHT}px`,
+    },
+    quality: 1,
+    pixelRatio: 1,
+  };
+}
+
+/**
+ * 递归调用 toPng 直到输出稳定（长度不再变化）。
+ *
+ * 根因：Safari 的 foreignObject 渲染管线是异步的，第一次 toPng
+ * 调用时内嵌的 base64 图片可能还没解码完成，canvas 就已经导出了。
+ * 每次调用 toPng 都会推进渲染，多调几次直到输出长度稳定即可。
+ * 最多重试 3 次，避免无限循环。
+ */
+async function stableToPng(
+  node: HTMLElement,
+  scale: number
+): Promise<string> {
+  const opts = getToPngOptions(scale);
+  let prevLength = 0;
+  let dataUrl = "";
+  const MAX_RETRIES = 3;
+
+  for (let i = 0; i <= MAX_RETRIES; i++) {
+    dataUrl = await toPng(node, opts);
+    if (dataUrl.length === prevLength) {
+      // 输出稳定，图片内容已完整
+      break;
+    }
+    prevLength = dataUrl.length;
+  }
+
+  return dataUrl;
 }
 
 /**
@@ -118,21 +170,11 @@ export async function exportCardToPng(
   node: HTMLElement,
   scale: number = 2
 ): Promise<string> {
-  // 确保图片加载完成后再截图
+  // 确保图片加载完成 + 同步解码模式
   await waitForImages(node);
 
-  const dataUrl = await toPng(node, {
-    width: CARD_WIDTH * scale,
-    height: CARD_HEIGHT * scale,
-    style: {
-      transform: `scale(${scale})`,
-      transformOrigin: "top left",
-      width: `${CARD_WIDTH}px`,
-      height: `${CARD_HEIGHT}px`,
-    },
-    quality: 1,
-    pixelRatio: 1,
-  });
+  // 递归截图直到输出稳定，解决 Safari foreignObject 异步渲染问题
+  const dataUrl = await stableToPng(node, scale);
   return dataUrl;
 }
 

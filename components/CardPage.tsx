@@ -108,6 +108,8 @@ const CardPage = forwardRef<HTMLDivElement, CardPageProps>(
                     alt=""
                     width={80}
                     height={80}
+                    decoding="sync"
+                    crossOrigin="anonymous"
                     style={{
                       width: 80,
                       height: 80,
